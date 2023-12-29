@@ -7,10 +7,12 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb2d;
     private Vector2 moveInput;
     private Animator anim;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void Update()
     {
@@ -18,28 +20,28 @@ public class PlayerMovement : MonoBehaviour
         moveInput.y = Input.GetAxisRaw("Vertical");
 
         moveInput.Normalize();
-
-        rb2d.velocity = moveInput * moveSpeed;
-        bool isWalking = false;
-
-        if (moveInput != Vector2.zero)
-        {
+        if (moveInput != Vector2.zero) {
             anim.SetBool("isWalking", true);
             anim.SetFloat("X", moveInput.x);
             anim.SetFloat("Y", moveInput.y);
-        }
-        else
-        {
+        } else {
             anim.SetBool("isWalking", false);
         }
 
-        if (moveInput.x < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
+        if (moveInput.x < 0) {
+            spriteRenderer.flipX = true;
+        } else if (moveInput.x > 0) {
+            spriteRenderer.flipX = false;
         }
-        else if (moveInput.x > 0)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    private void FixedUpdate() {
+        rb2d.velocity = moveInput * moveSpeed;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Movable")) {
+            Debug.Log("Collided with Movable");
         }
     }
 }
