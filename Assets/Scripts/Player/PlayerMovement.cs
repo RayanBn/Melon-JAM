@@ -21,11 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
         moveInput.Normalize();
         if (moveInput != Vector2.zero) {
-            anim.SetBool("isWalking", true);
             anim.SetFloat("X", moveInput.x);
             anim.SetFloat("Y", moveInput.y);
-        } else {
-            anim.SetBool("isWalking", false);
         }
 
         if (moveInput.x < 0) {
