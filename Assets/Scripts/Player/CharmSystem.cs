@@ -119,12 +119,18 @@ public class CharmSystem : MonoBehaviour
     private void AirCharm() {
         if (Input.GetButtonDown("Fire1") && airCharmCooldownTimer <= 0)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, airCharmDetectionRadius, LayerMask.GetMask("Movable"));
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, airCharmDetectionRadius);
 
             foreach (Collider2D collider in colliders)
             {
+                if (collider.gameObject.CompareTag("FireSwitch")) {
+                    Debug.Log("FireSwitch");
+                    collider.gameObject.GetComponent<FireSwitch>().TurnOff();
+                    continue;
+                }
+
                 Rigidbody2D rb = collider.GetComponent<Rigidbody2D>();
-                if (rb != null)
+                if (rb != null && collider.gameObject.CompareTag("Movable"))
                 {
                     rb.AddForce((collider.transform.position - transform.position).normalized * airCharmForce, ForceMode2D.Impulse);
                 }
