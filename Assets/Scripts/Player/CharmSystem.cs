@@ -119,6 +119,7 @@ public class CharmSystem : MonoBehaviour
     private void AirCharm() {
         if (Input.GetButtonDown("Fire1") && airCharmCooldownTimer <= 0)
         {
+            gameObject.GetComponent<ParticleSystem>().Play();
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, airCharmDetectionRadius);
 
             foreach (Collider2D collider in colliders)
